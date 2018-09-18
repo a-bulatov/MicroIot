@@ -3,7 +3,8 @@ from umqtt.simple import MQTTClient
 from ustruct import unpack
 from json import dumps
 
-import dht22 as LOGIC
+#import dht22 as LOGIC
+import meteo as LOGIC
 
 MQTT =  '10.0.0.1'
 
@@ -31,16 +32,19 @@ def start():
                 'IP': self.IP,
                 'DATE': self.DATE,
                 'TIME': self.TIME,
+                'MQTT': '' if self.mqtt is None else 'MQTT'
             }
 
         def init_mqtt(self, broker, topic):
             if not (self.mqtt is None):
                 self.mqtt.disconnect()
                 self.mqtt = None
-
-            self.mqtt = MQTTClient(self._client_id, broker)
-            self.mqtt.connect()
-            self.mqtt.topic = topic
+            try:
+                self.mqtt = MQTTClient(self._client_id, broker)
+                self.mqtt.connect()
+                self.mqtt.topic = topic
+            except:
+                self.mqtt = None
 
         def client_id(self):
             return self._client_id.decode()
@@ -97,6 +101,8 @@ def start():
             return tm
 
         def publish(self, message, topic=None):
+            if self.mqtt is None:
+                return
             if type(message) == dict:
                 message = {
                     "Sensor": self.client_id(),
@@ -113,7 +119,7 @@ def start():
     if devs is None:
         devs = Devs()
         topic, period = LOGIC.setup(devs)
-        devs.init_mqtt(MQTT,topic)
+        #devs.init_mqtt(MQTT,topic)
 
         def handler(timer):
             global tcnt, devs
