@@ -23,7 +23,7 @@ def loop(devs):
     global switch, ext_sensor, water_sensor, int_sensor, tms, int_temp, int_press, int_alt
 
     ret = None
-    rd =machine.ADC(0)
+    rd =water_sensor.read()
 
     if tms == 0:
         ext_sensor.measure()
