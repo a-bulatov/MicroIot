@@ -32,7 +32,7 @@ def start():
                 'IP': self.IP,
                 'DATE': self.DATE,
                 'TIME': self.TIME,
-                'MQTT': '' if self.mqtt is None else 'MQTT'
+                'MQTT': 'MQTT Error!' if self.mqtt is None else MQTT + ' MQTT'
             }
 
         def init_mqtt(self, broker, topic):
