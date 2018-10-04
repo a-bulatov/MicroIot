@@ -19,6 +19,12 @@ def setup(devs):
 
     return 'house/wether', 1000
 
+def str2(v):
+    v = str(v)
+    if '.' in v:
+        v = v.split('.')
+        v = v[0] + '.'+ v[1][:2]
+
 def loop(devs):
     global switch, ext_sensor, water_sensor, int_sensor, tms, int_temp, int_press, int_alt
 
@@ -41,13 +47,13 @@ def loop(devs):
             "Rain":rd
         }
 
-        tms = 11
+        tms = 61
 
     tms -= 1
     if switch()==1:
         devs.screen([
             '%s C %s ' % ( ext_sensor.temperature(), ext_sensor.humidity() ) + '%',
-            '%s C %s mmHg' % ( int_temp, int_press),
+            '%s C %s mmHg' % ( str2(int_temp), str2(int_press)),
             'rain' if rd<900 else 'dry'
         ])
     else:
