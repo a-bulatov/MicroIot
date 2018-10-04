@@ -24,6 +24,7 @@ def str2(v):
     if '.' in v:
         v = v.split('.')
         v = v[0] + '.'+ v[1][:2]
+    return v
 
 def loop(devs):
     global switch, ext_sensor, water_sensor, int_sensor, tms, int_temp, int_press, int_alt
