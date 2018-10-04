@@ -79,7 +79,10 @@ def start():
                 s = str(s)
                 for x in self._fdir:
                     if ('{{ %s }}' % x) in s:
-                        s = s.replace('{{ %s }}' % x, self._fdir[x]())
+                        if type(self._fdir[x]) == str:
+                            s = s.replace('{{ %s }}' % x, self._fdir[x])
+                        else:
+                            s = s.replace('{{ %s }}' % x, self._fdir[x]())
                 self.oled.text(s, 0, y)
                 y += 10
             self.oled.show()
