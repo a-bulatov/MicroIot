@@ -32,7 +32,7 @@ def start():
                 'IP': self.IP,
                 'DATE': self.DATE,
                 'TIME': self.TIME,
-                'MQTT': 'MQTT Error!' if self.mqtt is None else MQTT + ' MQTT'
+                'MQTT': 'MQTT Disconnected'
             }
 
         def init_mqtt(self, broker, topic):
@@ -45,6 +45,7 @@ def start():
                 self.mqtt.topic = topic
             except:
                 self.mqtt = None
+            self._fdir['MQTT'] = 'MQTT Error!' if self.mqtt is None else MQTT + ' MQTT'
 
         def client_id(self):
             return self._client_id.decode()
@@ -119,7 +120,7 @@ def start():
     if devs is None:
         devs = Devs()
         topic, period = LOGIC.setup(devs)
-        #devs.init_mqtt(MQTT,topic)
+        devs.init_mqtt(MQTT,topic)
 
         def handler(timer):
             global tcnt, devs
